@@ -1,4 +1,11 @@
-. ./cake.ps1
+
+[string] $cakeBootstrapper      = './v0.0.5-alpha-cake.ps1'
+[string] $cakeBootstrapperUrl   = 'https://raw.githubusercontent.com/devlead/Cake.Bridge/v0.0.5-alpha/src/cake.ps1'
+if (!(Test-Path $cakeBootstrapper))
+{
+    Invoke-RestMethod $cakeBootstrapperUrl -OutFile $cakeBootstrapper
+}
+. $cakeBootstrapper
 
 ######################################################################
 ## GLOBALS
@@ -49,7 +56,7 @@ $packTask       = "Pack" |`
                     Does -Action ({
                         [DotNetCorePackSettings]   $packSettings = [DotNetCorePackSettings]::new()
                         $packSettings.OutputDirectory = $nugetRoot
-                        
+
                         [DotNetCoreAliases]::DotNetCorePack(
                             $context,
                             $solution.FullPath,
